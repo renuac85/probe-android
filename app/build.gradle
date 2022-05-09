@@ -21,6 +21,18 @@ android {
 		buildConfigField "boolean", "RUN_AUTOMATION", "false"
 	}
 
+    splits {
+        abi {
+            enable true
+
+            reset()
+
+            include 'x86' , 'x86_64' , 'armeabi-v7a' , 'arm64-v8a'
+
+            universalApk false
+        }
+    }
+
     buildTypes {
         debug {
             testCoverageEnabled true
@@ -32,6 +44,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField 'String', 'IS_DEBUG', '""'
+        }
+        profile {
+            initWith debug
         }
     }
 
@@ -141,6 +156,10 @@ dependencies {
 // Dependency Injection
     implementation 'com.google.dagger:dagger:2.36'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.36'
+
+    debugImplementation 'org.openobservatory.ooniprobe.shared:flutter_debug:1.0'
+    profileImplementation 'org.openobservatory.ooniprobe.shared:flutter_profile:1.0'
+    releaseImplementation 'org.openobservatory.ooniprobe.shared:flutter_release:1.0'
 
 // Testing
 	// Unit Testing

@@ -30,7 +30,7 @@ import org.openobservatory.ooniprobe.common.PreferenceManager;
 import org.openobservatory.ooniprobe.common.ThirdPartyServices;
 import org.openobservatory.ooniprobe.common.service.ServiceUtil;
 import org.openobservatory.ooniprobe.model.database.Measurement;
-
+import io.flutter.embedding.android.FlutterActivity;
 import java.util.Arrays;
 
 import localhost.toolkit.app.fragment.MessageDialogFragment;
@@ -91,12 +91,15 @@ public class PreferenceFragment extends ExtendedPreferenceFragment<PreferenceFra
         Preference pref = findPreference(getString(R.string.send_email));
         if (pref != null)
             pref.setOnPreferenceClickListener(preference -> {
+
                 Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse(getString(R.string.shareEmailTo)));
                 emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.shareSubject, BuildConfig.VERSION_NAME));
                 emailIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.Settings_SendEmail_Message) +
                         "\n\n\nMANUFACTURER: " + Build.MANUFACTURER + "\nMODEL: " + Build.MODEL + "\nBOARD: " + Build.BOARD + "\nTIME: " + Build.TIME);
                 try {
-                    startActivity(Intent.createChooser(emailIntent, getString(R.string.Settings_SendEmail_Label)));
+                    startActivity(      FlutterActivity
+                            .withCachedEngine("my_engine_id")
+                            .build(getActivity()));
                 } catch (Exception e) {
                     Toast.makeText(getActivity(), R.string.Settings_SendEmail_Error, Toast.LENGTH_SHORT).show();
                 }

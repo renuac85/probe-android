@@ -12,11 +12,19 @@ buildscript {
 }
 
 allprojects {
+	String storageUrl = System.env.FLUTTER_STORAGE_BASE_URL ?: "https://storage.googleapis.com"
 	repositories {
 		google()
 		jcenter()
 		mavenCentral()
 		maven { url "https://jitpack.io" }
+		maven {
+			// TODO(aanorbel): fix to appropriate url or use mono-repo
+			url '../shared/build/host/outputs/repo'
+		}
+		maven {
+			url "$storageUrl/download.flutter.io"
+		}
 	}
 }
 

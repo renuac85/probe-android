@@ -12,6 +12,9 @@ import com.google.gson.Gson;
 import com.raizlabs.android.dbflow.config.FlowLog;
 import com.raizlabs.android.dbflow.config.FlowManager;
 
+import io.flutter.embedding.engine.FlutterEngine;
+import io.flutter.embedding.engine.FlutterEngineCache;
+import io.flutter.embedding.engine.dart.DartExecutor;
 import org.openobservatory.ooniprobe.BuildConfig;
 import org.openobservatory.ooniprobe.client.OONIAPIClient;
 import org.openobservatory.ooniprobe.common.service.RunTestService;
@@ -31,6 +34,7 @@ import okhttp3.OkHttpClient;
 
 
 public class Application extends android.app.Application {
+	public FlutterEngine flutterEngine;
 	@Inject PreferenceManager _preferenceManager;
 	@Inject Gson _gson;
 	@Inject OkHttpClient _okHttpClient;
@@ -55,6 +59,18 @@ public class Application extends android.app.Application {
 
 		LocaleUtils.setLocale(new Locale(_preferenceManager.getSettingsLanguage()));
 		LocaleUtils.updateConfig(this, getBaseContext().getResources().getConfiguration());
+		// Instantiate a FlutterEngine.
+		flutterEngine = new FlutterEngine(this);
+
+		// Start executing Dart code to pre-warm the FlutterEngine.
+		flutterEngine.getDartExecutor().executeDartEntrypoint(
+				DartExecutor.DartEntrypoint.createDefault()
+		);
+
+		// Cache the FlutterEngine to be used by FlutterActivity.
+		FlutterEngineCache
+				.getInstance()
+				.put("my_engine_id", flutterEngine);
 	}
 
 	protected AppComponent buildDagger() {
