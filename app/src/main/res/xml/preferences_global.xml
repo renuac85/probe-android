@@ -381,6 +381,5 @@
 		android:icon="@drawable/about_ooni"
 		android:key="@string/about_ooni"
 		android:title="@string/Settings_About_Label">
-		<intent android:action="org.openobservatory.ooniprobe.activity.InfoActivity" />
 	</PreferenceScreen>
 </PreferenceScreen>

@@ -12,6 +12,9 @@ buildscript {
 }
 
 allprojects {
+	Properties properties = new Properties()
+	properties.load(project.rootProject.file('local.properties').newDataInputStream())
+	def flutterModuleDir = properties.getProperty('flutter-module.dir')
 	String storageUrl = System.env.FLUTTER_STORAGE_BASE_URL ?: "https://storage.googleapis.com"
 	repositories {
 		google()
@@ -19,8 +22,7 @@ allprojects {
 		mavenCentral()
 		maven { url "https://jitpack.io" }
 		maven {
-			// TODO(aanorbel): fix to appropriate url or use mono-repo
-			url '../shared/build/host/outputs/repo'
+			url "${flutterModuleDir}/build/host/outputs/repo"
 		}
 		maven {
 			url "$storageUrl/download.flutter.io"

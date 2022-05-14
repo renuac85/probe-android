@@ -59,15 +59,14 @@ public class Application extends android.app.Application {
 
 		LocaleUtils.setLocale(new Locale(_preferenceManager.getSettingsLanguage()));
 		LocaleUtils.updateConfig(this, getBaseContext().getResources().getConfiguration());
-		// Instantiate a FlutterEngine.
-		flutterEngine = new FlutterEngine(this);
+		setupFlutterEngine();
+	}
 
-		// Start executing Dart code to pre-warm the FlutterEngine.
+	private void setupFlutterEngine() {
+		flutterEngine = new FlutterEngine(this);
 		flutterEngine.getDartExecutor().executeDartEntrypoint(
 				DartExecutor.DartEntrypoint.createDefault()
 		);
-
-		// Cache the FlutterEngine to be used by FlutterActivity.
 		FlutterEngineCache
 				.getInstance()
 				.put("my_engine_id", flutterEngine);
