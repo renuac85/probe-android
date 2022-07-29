@@ -29,6 +29,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.flutter.embedding.android.FlutterFragment;
 import localhost.toolkit.app.fragment.ConfirmDialogFragment;
 
 public class MainActivity extends AbstractActivity implements ConfirmDialogFragment.OnConfirmedListener {
@@ -64,7 +65,7 @@ public class MainActivity extends AbstractActivity implements ConfirmDialogFragm
             bottomNavigation.setOnNavigationItemSelectedListener(item -> {
                 switch (item.getItemId()) {
                     case R.id.dashboard:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.content, new DashboardFragment()).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.content, FlutterFragment.withCachedEngine("my_engine_id").shouldAttachEngineToActivity(false).build()).commit();
                         return true;
                     case R.id.testResults:
                         getSupportFragmentManager().beginTransaction().replace(R.id.content, new ResultListFragment()).commit();
